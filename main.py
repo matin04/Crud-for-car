@@ -27,7 +27,7 @@ async def get_user_endpoint(user_id:int):
 
 
 
-app.post("/create_user/", response_model=UserResponse, summary="Create new user")
+@app.post("/create_user/", response_model=UserResponse, summary="Create new user")
 async def create_user_endpoint(user:UserCreate):
     user_id = await create_user(user.username, user.email, user.password    )
     return UserResponse(id = user_id, username= user.username, email = user.email, password=user.password)
@@ -43,14 +43,14 @@ async def list_users_endpoint():
 async def update_user_endpoint(user_id:int, user:UserCreate):
     updated = await update_user(user_id, user.username, user.email, user.password)
     if not updated:
-        return HTTPException(status_code=404, detail="user not found")
+        raise HTTPException(status_code=404, detail="user not found")
     return {"message":"user updated"}
 
 @app.delete("/user/{user_id}", summary="delete user")
 async def deleted_user_endpoint(user_id:int):
     deleted = await delete_user(user_id)
     if not deleted:
-        return HTTPException(status_code=404, detail="USER NOT FOND")
+        raise HTTPException(status_code=404, detail="USER NOT FOND")
     return {"message":"user deleted"}
 
 
@@ -60,7 +60,7 @@ class CarCreate(BaseModel):
     title:str
     description:str
     model:str
-    price:str
+    price:int
     user_id:int
 
 
@@ -69,7 +69,7 @@ class CarResponse(BaseModel):
     title:str
     description:str
     model:str
-    price:str
+    price:int
     user_id:int
 
 
@@ -82,16 +82,16 @@ async def get_car_endpoint(car_id:int):
     return car
 
 
-app.post("/create_car/", response_model=UserResponse, summary="Create new car")
+@app.post("/create_car/", response_model=CarResponse, summary="Create new car")
 async def create_car_endpoint(car:CarCreate):
     car_id = await create_car(car.title,  car.description, car.model, car.price, car.user_id)
-    return CarResponse(id=car_id, title=car.title, description=car.description, price=car.price, user_id=car.user_id)
+    return CarResponse(id=car_id, title=car.title, description=car.description, model=car.model, price=car.price, user_id=car.user_id)
 
 
 @app.get("/list_car/", response_model=list[dict], summary="All Users")
 async def list_car_endpoint():
-    books = await get_car()
-    return books
+    cars = await get_car()
+    return cars
 
 
 
@@ -99,12 +99,12 @@ async def list_car_endpoint():
 async def update_car_endpoint(car_id:int, car:CarCreate):
     updated = await update_car(car_id, car.title, car.description, car.model, car.price, car.user_id)
     if not updated:
-        return HTTPException(status_code=404, detail="car not found")
+        raise HTTPException(status_code=404, detail="car not found")
     return {"message":"car updated"}
 
-@app.delete("/deleted_car/{book_id}", summary="delete car")
+@app.delete("/deleted_car/{car_id}", summary="delete car")
 async def deleted_car_endpoint(car_id:int):
     deleted = await delete_car(car_id)
     if not deleted:
-        return HTTPException(status_code=404, detail="CAR NOT FOND")
+        raise HTTPException(status_code=404, detail="CAR NOT FOND")
     return {"message":"Car deleted"}
