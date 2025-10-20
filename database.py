@@ -5,7 +5,7 @@ import os
 DB_CONFIG = {
     "host" : "localhost",
     "port" : 5432,
-    "database" : "Fastapi1",
+    "database" : "Crud_car_for_fastapi",
     "user":"postgres",
     "password" : "55055904855"
 }
