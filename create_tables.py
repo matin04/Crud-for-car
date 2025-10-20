@@ -15,6 +15,7 @@ async def main():
         id SERIAL PRIMARY KEY,
         title VARCHAR(150) NOT NULL,
         description VARCHAR(250) ,
+        model VARCHAR(250)
         price INT,
         created_at DATE DEFAULT CURRENT DATE,
         user_id INT REFERENCES user(id) ON DELETE CASCADE
