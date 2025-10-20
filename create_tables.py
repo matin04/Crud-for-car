@@ -11,7 +11,7 @@ async def main():
         email VARCHAR(250) NOT NULL UNIQUE,
         password VARCHAR(200) NOT NULL
     );
-    CREATE TABLE IF NOT EXIST car(
+    CREATE TABLE IF NOT EXISTS car(
         id SERIAL PRIMARY KEY,
         title VARCHAR(150) NOT NULL,
         description VARCHAR(250) ,
